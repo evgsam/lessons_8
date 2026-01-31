@@ -5,7 +5,7 @@ from scapy.sendrecv import sr1, send
 from scapy.utils import rdpcap
 import random
 
-DPORT = 443
+DPORT = 80
 
 # Проверяем наличие обязательных аргументов
 if len(sys.argv) < 2:
