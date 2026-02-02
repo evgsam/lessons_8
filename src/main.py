@@ -3,7 +3,7 @@ from config import AppConfig
 from auth import authorization
 from get_data import get_data_
 from payloads import get_payloads
-from httpClient import HttpClient
+from http_client import HttpClient
 
 def handle_status(code):
     if code == 200:
