@@ -2,6 +2,7 @@ import requests
 from config import AppConfig
 from auth import auth 
 from get_data import get_data
+from payloads import get_payloads
 
 def handle_status(code):
     if code == 200:
@@ -26,9 +27,10 @@ def handle_status(code):
 def main():
     session = requests.Session()
     credentials = AppConfig().get_conf_credentials()
+    payloads = get_payloads()
     response = auth(credentials, session)
     handle_status(response.status_code)
-    response = get_data(credentials,session,"/newsnippet2?snippet=OGAF")
+    response = get_data(credentials,session,f"/newsnippet2?snippet={payloads[0]}")
     handle_status(response.status_code)
 
 if __name__ == "__main__":
