@@ -5,12 +5,25 @@ from dotenv import load_dotenv
 this_base_url = f"https://google-gruyere.appspot.com/" 
 
 class AppConfig:
-    def __init__(self, env_file: str = ".env"):
-        load_dotenv(env_file)
+    def __init__(self):
+        load_dotenv()
+        self._url = f"https://google-gruyere.appspot.com/" 
+        self._id = os.getenv("MY_ID")
         self._username = os.getenv("USERNAME")
         self._password = os.getenv("PSWRD")
-        self._id = os.getenv("MY_ID")
-
+    
+    def url(self) -> str:
+        """Возвращает URL"""
+        if not self._url:
+            raise ValueError("URL не найден")
+        return self._url
+    
+    def id(self) -> str:
+        """Возвращает ID"""
+        if not self._id:
+            raise ValueError("ID не найден в .env файле")
+        return self._id
+    
     def username(self) -> str:
         """Возвращает имя пользователя"""
         if not self._username:
@@ -23,23 +36,20 @@ class AppConfig:
             raise ValueError("Пароль не найден в .env файле")
         return self._password
     
-    def id(self) -> str:
-        """Возвращает ID"""
-        if not self._id:
-            raise ValueError("ID не найден в .env файле")
-        return self._id
+
 
     def get_conf_credentials(self) -> dict:
         """Возвращает учетные данные в виде словаря"""
         return {
-            "username": self.username,
-            "password": self.password,
-            "id": self.id
+            "url": self.url(),
+            "id": self.id(),
+            "username": self.username(),
+            "password": self.password(),
         }
     
     def is_valid(self) -> bool:
         """Проверяет, есть ли все необходимые данные"""
-        return bool(self._username and self._password and self._id)
+        return bool(self._username and self._url and self._id and self._password ) 
 
 
 
