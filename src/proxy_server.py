@@ -63,9 +63,23 @@ class ProxyHTTPRequestHandler(socketserver.BaseRequestHandler):
 
 
 class ProxyServer:
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
-        self.server = socketserver.TCPServer((host, port), ProxyHTTPRequestHandler)
+    def __init__(self, proxy_ip, proxy_port):
+        self.host = proxy_ip
+        self.port = proxy_port
+        self.server = socketserver.TCPServer((proxy_ip, proxy_port), ProxyHTTPRequestHandler)
         self.server_thread = None
         self.running = False
+
+    def start(self):
+        self.running = True
+        self.server_thread = threading.Thread(target=self.server.serve_forever, daemon=True)
+        self.server_thread.start()
+        print(f"[PROXY] Запущен на {self.host}:{self.port}")
+
+    def stop(self):
+        self.running = False
+        self.server.shutdown()
+        self.server.server_close()
+        if self.server_thread:
+            self.server_thread.join()
+        print("[PROXY] Остановлен")
