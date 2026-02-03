@@ -2,13 +2,46 @@
 import os
 from dotenv import load_dotenv
 
-this_base_url = f"https://google-gruyere.appspot.com/" 
+import psutil
+
+def select_interface():
+    """Выводит все сетевые интерфейсы и предлагает выбрать один."""
+    stats = psutil.net_if_stats()
+    addrs = psutil.net_if_addrs()
+    
+    interfaces = []
+    for iface, stat in stats.items():
+        status = "UP" if stat.isup else "DOWN"
+        info = f"{iface}: {status}, MTU={stat.mtu}"
+        
+        if iface in addrs:
+            ipv4 = next((a.address for a in addrs[iface] if a.family.name == 'AF_INET'), 'no IP')
+            info += f", IP={ipv4}"
+        
+        interfaces.append((iface, info))
+    
+    print("Выберите сетевой интерфейс для снифинга:")
+    for i, (name, info) in enumerate(interfaces, 1):
+        print(f"{i}. {info}")
+    
+    while True:
+        try:
+            choice = int(input(f"Выберите номер (1-{len(interfaces)}): ")) - 1
+            if 0 <= choice < len(interfaces):
+                selected = interfaces[choice][0]
+                print(f"Выбран: {selected}")
+                return selected
+            print("Неверный номер!")
+        except ValueError:
+            print("Введите число!")
+
 
 class AppConfig:
     def __init__(self):
         load_dotenv()
         self._url = f"https://google-gruyere.appspot.com/" 
         self._id = os.getenv("MY_ID")
+        self._iface = select_interface()
         self._username = os.getenv("USERNAME")
         self._password = os.getenv("PSWRD")
         self._proxy_ip = "127.0.0.1"
