@@ -1,8 +1,9 @@
 #Тут реализую калсс, в котором будут хранится данные
 import os
 from dotenv import load_dotenv
-
+from urllib.parse import urlparse
 import psutil
+import socket
 
 def select_interface():
     """Выводит все сетевые интерфейсы и предлагает выбрать один."""
@@ -40,6 +41,7 @@ class AppConfig:
     def __init__(self):
         load_dotenv()
         self._url = f"https://google-gruyere.appspot.com/" 
+        self._host_ip = socket.gethostbyname(urlparse(self._url).netloc)
         self._id = os.getenv("MY_ID")
         self._iface = select_interface()
         self._username = os.getenv("USERNAME")
