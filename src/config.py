@@ -40,7 +40,7 @@ def select_interface():
 class AppConfig:
     def __init__(self):
         load_dotenv()
-        self._url = f"https://google-gruyere.appspot.com/" 
+        self._url = f"http://google-gruyere.appspot.com/" 
         self._host_ip = socket.gethostbyname(urlparse(self._url).netloc)
         self._id = os.getenv("MY_ID")
         self._iface = select_interface()

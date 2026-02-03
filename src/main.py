@@ -6,17 +6,14 @@ from http_client import HttpClient
 from exploit_test import exploit_test
 
 
-
-
-
 def main():
    session = requests.Session()
    credentials = AppConfig().get_conf_credentials()
-   print(credentials["proxy_port"])
-    #client = HttpClient(credentials,session)
-    #response = authorization(client)
-    #payloads = get_payloads()
-    #exploit_test(client,payloads)
+   #print(credentials["proxy_port"])
+   client = HttpClient(credentials,session)
+   response = authorization(client)
+   payloads = get_payloads()
+   exploit_test(client,payloads)
 
 if __name__ == "__main__":
     main()
