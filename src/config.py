@@ -11,12 +11,26 @@ class AppConfig:
         self._id = os.getenv("MY_ID")
         self._username = os.getenv("USERNAME")
         self._password = os.getenv("PSWRD")
+        self._proxy_ip = "127.0.0.1"
+        self._proxy_port = "8080"
     
     def url(self) -> str:
         """Возвращает URL"""
         if not self._url:
             raise ValueError("URL не найден")
         return self._url
+    
+    def host_ip(self) -> str:
+        """Возвращает IP хоста"""
+        if not self._host_ip:
+            raise ValueError("URL не найден")
+        return self._host_ip
+    
+    def iface(self) -> str:
+        """Возвращает Интерфейс для прослушки"""
+        if not self._iface:
+            raise ValueError("Интерфейс не найден")
+        return self._iface
     
     def id(self) -> str:
         """Возвращает ID"""
@@ -36,15 +50,30 @@ class AppConfig:
             raise ValueError("Пароль не найден в .env файле")
         return self._password
     
+    def proxy_ip(self) -> str:
+        """Возвращает IP прокси"""
+        if not self._proxy_ip:
+            raise ValueError("IP для прокси не найден")
+        return self._proxy_ip
+    
+    def proxy_port(self) -> str:
+        """Возвращает порт для прокси"""
+        if not self._proxy_port:
+            raise ValueError("Порт для прокси не найден")
+        return self._proxy_port
 
 
     def get_conf_credentials(self) -> dict:
         """Возвращает учетные данные в виде словаря"""
         return {
             "url": self.url(),
+            "host_ip": self.host_ip(),
+            "iface": self.iface(),
             "id": self.id(),
             "username": self.username(),
             "password": self.password(),
+            "proxy_ip": self.proxy_ip(),
+            "proxy_port": self.proxy_port(),
         }
     
     def is_valid(self) -> bool:
