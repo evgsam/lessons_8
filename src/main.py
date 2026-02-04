@@ -17,7 +17,8 @@ def main():
    
     proxy = ProxyServer(proxy_ip,proxy_port)
     target_host = credentials["host_ip"]
-    sniffer = HttpSniffer(my_iface, target_host=target_host)
+    sniffer = HttpSniffer(my_iface, target_host=target_host, pcap_path="sniffed_traffic.pcap")
+
     try:
         proxy.start()
         sniffer.start()
